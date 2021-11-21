@@ -1,0 +1,84 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.movie.MovieDetailFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/list_content">
+
+        <ImageView
+            android:id="@+id/headerImage"
+            android:layout_width="250dp"
+            android:layout_height="270dp"
+            android:src="@drawable/ic_placeholder"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/list_content">
+
+            <TextView
+                android:id="@+id/movieTitle"
+                style="@style/ContentTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Movie Title" />
+
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/ContentTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Overview" />
+
+            <TextView
+                android:id="@+id/textViewOverview"
+                style="@style/ListItemText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Short Overview Description" />
+
+            <TextView
+                android:id="@+id/textViewDetail"
+                style="@style/ContentTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Detail" />
+
+            <TextView
+                android:id="@+id/textViewAverageVote"
+                style="@style/ListItemText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Average Vote" />
+
+            <TextView
+                android:id="@+id/textViewReleaseDate"
+                style="@style/ListItemText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Release Date" />
+
+            <Button
+                android:id="@+id/buttonAddToFavorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Add To Favorite" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
