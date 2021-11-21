@@ -13,6 +13,7 @@ import com.thit.movieapp.R
 import com.thit.movieapp.data.network.Resource
 import com.thit.movieapp.data.responses.Movie
 import com.thit.movieapp.databinding.FragmentMovieListBinding
+import com.thit.movieapp.handleApiError
 import com.thit.movieapp.ui.adapter.MovieAdapter
 import com.thit.movieapp.viewmodel.MovieViewModel
 import com.thit.movieapp.visible
@@ -31,8 +32,12 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
         binding = FragmentMovieListBinding.bind(view)
         binding.textViewPopularMovieTitle.visible(false)
         binding.textViewUpcomingTitle.visible(false)
-
+        binding.errorLayout?.visible(false)
         (activity as AppCompatActivity).supportActionBar?.title = "Movie List"
+        binding.buttonRetry?.setOnClickListener {
+            binding.progressBar.visible(true)
+            viewModel.loadMovies()
+        }
         setupRecyclerViewAdapterForPopularMovie()
         setupRecyclerViewAdapterForUpcomingMovie()
         observeMovieLists()
@@ -43,27 +48,25 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
             binding.progressBar.visible(it is Resource.Loading)
             binding.textViewPopularMovieTitle.visible(it is Resource.Success)
             binding.textViewUpcomingTitle.visible(it is Resource.Success)
+            binding.errorLayout?.visible(it is Resource.Failure)
             when (it) {
                 is Resource.Success -> {
                     renderPopularMovie(it.value.results.toMutableList())
-                    Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
                 }
-                is Resource.Failure -> {
-                    Toast.makeText(requireContext(), "Failure", Toast.LENGTH_SHORT).show()
-                }
+                is Resource.Failure -> handleApiError(it) { viewModel.loadMovies() }
             }
         })
 
         viewModel.upcomingMovieResponse.observe(this, Observer {
             binding.progressBar.visible(it is Resource.Loading)
+            binding.textViewPopularMovieTitle.visible(it is Resource.Success)
+            binding.textViewUpcomingTitle.visible(it is Resource.Success)
+            binding.errorLayout?.visible(it is Resource.Failure)
             when (it) {
                 is Resource.Success -> {
                     renderUpcomingMovies(it.value.results.toMutableList())
-                    Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
                 }
-                is Resource.Failure -> {
-                    Toast.makeText(requireContext(), "Failure", Toast.LENGTH_SHORT).show()
-                }
+                is Resource.Failure -> handleApiError(it) { viewModel.loadMovies() }
             }
         })
     }

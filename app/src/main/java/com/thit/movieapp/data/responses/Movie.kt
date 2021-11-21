@@ -26,4 +26,5 @@ data class Movie(
     val vote_count: Int,
     var is_favorite: Boolean,
     var is_popular: Boolean,
-    ) : Serializable
+    var up_coming_date: String?
+) : Serializable

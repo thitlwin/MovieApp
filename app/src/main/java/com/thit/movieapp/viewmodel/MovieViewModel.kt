@@ -25,8 +25,7 @@ class MovieViewModel @Inject constructor(private val repository: MovieRepository
         get() = _upcomingMovieResponse
 
     init {
-        getPopularMovies()
-        getUpcomingMovies()
+        loadMovies()
     }
 
     private fun getPopularMovies() = viewModelScope.launch {
@@ -40,5 +39,10 @@ class MovieViewModel @Inject constructor(private val repository: MovieRepository
     fun toggleFavoriteStatus(movie: Movie) = viewModelScope.launch {
         movie.is_favorite = !movie.is_favorite
         repository.updateMovie(movie)
+    }
+
+    fun loadMovies() {
+        getPopularMovies()
+        getUpcomingMovies()
     }
 }
