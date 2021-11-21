@@ -16,32 +16,34 @@ class MovieRepository @Inject constructor(
     private val TAG = javaClass.simpleName
 
     suspend fun getPopularMovies() = safeApiCall {
+//        Log.i(TAG, "getPopularMovies----")
+
         api.getPopularMovies(apiKey = apiKey)
             .also {
-            it.results.map { it -> it.is_popular = true }
-//            Log.d(TAG, "saving movie from getPopularMovies-----it.results=${it.results}")
-            movieDao.insertMovieList(it.results)
-        }
+                it.results.map { it -> it.is_popular = true }
+                movieDao.insertMovieList(it.results)
+            }
     }
 
     suspend fun getUpcomingMovies() = safeApiCall {
+//        Log.i(TAG, "getUpcomingMovies----")
+
         api.getUpcomingMovies(apiKey = apiKey)
             .also {
-            var upcomingDateRange = it.dates.minimum +":"+it.dates.maximum
-            it.results.map { it -> it.up_coming_date =  upcomingDateRange}
-//            Log.d(TAG, "saving movie from getUpcomingMovies-----")
-            movieDao.insertMovieList(it.results)
-        }
+                var upcomingDateRange = it.dates.minimum + ":" + it.dates.maximum
+                it.results.map { it -> it.up_coming_date = upcomingDateRange }
+                movieDao.insertMovieList(it.results)
+            }
     }
 
-    suspend fun getPopularMoviesFromDB() {
+    suspend fun getPopularMoviesFromDB(): List<Movie> {
 //        Log.i(TAG, "getPopularMoviesFromDB")
-        movieDao.getPopularMovies()
+        return movieDao.getPopularMovies()
     }
 
-    suspend fun getUpcomingMoviesFromDB() {
+    suspend fun getUpcomingMoviesFromDB(): List<Movie> {
 //        Log.i(TAG, "getUpcomingMoviesFromDB")
-        movieDao.getUpcomingMovies()
+        return movieDao.getUpcomingMovies()
     }
 
     suspend fun saveMoveToDB(movie: Movie) {

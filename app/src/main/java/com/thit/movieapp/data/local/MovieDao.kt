@@ -15,7 +15,7 @@ interface MovieDao {
     @Query("SELECT * FROM movie WHERE id = :movieId")
     suspend fun getMovieById(movieId: Int) : Movie?
 
-    @Query("SELECT * FROM movie WHERE is_popular = 1")
+    @Query("SELECT * FROM movie WHERE is_popular")
     suspend fun getPopularMovies() : List<Movie>
 
     @Update
@@ -24,6 +24,6 @@ interface MovieDao {
     @Delete
     suspend fun deleteMovie(movie: Movie)
 
-    @Query("SELECT * FROM movie WHERE up_coming_date <> null ")
+    @Query("SELECT * FROM movie WHERE up_coming_date IS NOT NULL")
     suspend fun getUpcomingMovies() : List<Movie>
 }

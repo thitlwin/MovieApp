@@ -1,10 +1,8 @@
 package com.thit.movieapp.ui.movie
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -40,10 +38,28 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
         }
         setupRecyclerViewAdapterForPopularMovie()
         setupRecyclerViewAdapterForUpcomingMovie()
-        observeMovieLists()
+        observeMovieListFromApi()
+        observeMovieListFromLocal()
     }
 
-    private fun observeMovieLists() {
+    private fun observeMovieListFromLocal() {
+        viewModel.popularMovieList.observe(
+            this,
+            Observer {
+                binding.textViewPopularMovieTitle.visible(!it.isNullOrEmpty())
+                binding.progressBar.visible(false)
+                renderPopularMovie(it.toMutableList())
+            }
+        )
+
+        viewModel.upcomingMovieList.observe(this, Observer {
+            binding.textViewUpcomingTitle.visible(!it.isNullOrEmpty())
+            binding.progressBar.visible(false)
+            renderUpcomingMovies(it.toMutableList())
+        })
+    }
+
+    private fun observeMovieListFromApi() {
         viewModel.popularMovieResponse.observe(this, Observer {
             binding.progressBar.visible(it is Resource.Loading)
             binding.textViewPopularMovieTitle.visible(it is Resource.Success)
@@ -94,7 +110,7 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
     private fun setupRecyclerViewAdapterForUpcomingMovie() {
         binding.recyclerViewForUpcomingMovie.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        adapterFoUpcomingMovie = MovieAdapter(arrayListOf()){
+        adapterFoUpcomingMovie = MovieAdapter(arrayListOf()) {
             viewModel.toggleFavoriteStatus(it)
             adapterFoUpcomingMovie.editItem(it)
         }

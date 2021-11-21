@@ -1,6 +1,5 @@
 package com.thit.movieapp.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.thit.movieapp.data.network.Resource
 import com.thit.movieapp.data.repository.MovieRepository
@@ -24,8 +23,18 @@ class MovieViewModel @Inject constructor(private val repository: MovieRepository
     val upcomingMovieResponse: LiveData<Resource<UpcomingMovieResponse>>
         get() = _upcomingMovieResponse
 
+    private val _popularMovieList: MutableLiveData<List<Movie>> =
+        MutableLiveData()
+    val popularMovieList: LiveData<List<Movie>>
+        get() = _popularMovieList
+
+    private val _upcomingMovieList: MutableLiveData<List<Movie>> =
+        MutableLiveData()
+    val upcomingMovieList: LiveData<List<Movie>>
+        get() = _upcomingMovieList
+
     init {
-        loadMovies()
+        checkMovieFromDBAndLoadFromApi()
     }
 
     private fun getPopularMovies() = viewModelScope.launch {
@@ -42,7 +51,27 @@ class MovieViewModel @Inject constructor(private val repository: MovieRepository
     }
 
     fun loadMovies() {
-        getPopularMovies()
-        getUpcomingMovies()
+        viewModelScope.launch {
+            _popularMovieResponse.value = repository.getPopularMovies()
+            _upcomingMovieResponse.value = repository.getUpcomingMovies()
+        }
+    }
+
+    fun checkMovieFromDBAndLoadFromApi() {
+
+        viewModelScope.launch {
+            val upcomingList = repository.getUpcomingMoviesFromDB()
+            if (upcomingList.isEmpty())
+                getUpcomingMovies()
+            else
+                _upcomingMovieList.value = upcomingList
+
+            val popularList = repository.getPopularMoviesFromDB()
+            if (popularList.isEmpty())
+                getPopularMovies()
+            else
+                _popularMovieList.value = popularList
+        }
+
     }
 }
