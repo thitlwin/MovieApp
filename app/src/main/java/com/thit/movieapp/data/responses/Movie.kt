@@ -27,4 +27,15 @@ data class Movie(
     var is_favorite: Boolean,
     var is_popular: Boolean,
     var up_coming_date: String?
-) : Serializable
+) : Serializable {
+    override fun equals(other: Any?): Boolean {
+        when (other) {
+            is Movie -> {
+                return this.id == other.id &&
+                        this.title == other.title &&
+                        this.original_title == other.original_title
+            }
+            else -> return false
+        }
+    }
+}

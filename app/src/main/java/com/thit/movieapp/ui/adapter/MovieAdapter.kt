@@ -62,15 +62,15 @@ class MovieAdapter(
         movies = results
     }
 
-    fun editItem(it: Movie) {
-        Log.d(TAG, "editItem - $it")
-        val index = movies.indexOf(it)
-//        movies.apply { movies[index].is_favorite = !movies[index].is_favorite }
-        movies = movies.also { movies[index].is_favorite = !movies[index].is_favorite}
-//        notifyItemRemoved(index)
-        Log.d(TAG, "atEdit, movies[index].is_favorite - ${movies[index].is_favorite}")
-        notifyItemChanged(index)
-    }
+//    fun editItem(it: Movie) {
+//        Log.d(TAG, "editItem - $it")
+//        val index = movies.indexOf(it)
+////        movies.apply { movies[index].is_favorite = !movies[index].is_favorite }
+//        movies = movies.also { movies[index].is_favorite = !movies[index].is_favorite}
+////        notifyItemRemoved(index)
+//        Log.d(TAG, "atEdit, movies[index].is_favorite - ${movies[index].is_favorite}")
+//        notifyItemChanged(index)
+//    }
 
 
     class MovieViewHolder(binding: MovieListItemBinding) :

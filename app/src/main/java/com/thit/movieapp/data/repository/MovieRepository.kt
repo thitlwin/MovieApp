@@ -1,6 +1,7 @@
 package com.thit.movieapp.data.repository
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import com.thit.movieapp.apiKey
 import com.thit.movieapp.data.UserPreferences
 import com.thit.movieapp.data.local.MovieDao
@@ -36,12 +37,12 @@ class MovieRepository @Inject constructor(
             }
     }
 
-    suspend fun getPopularMoviesFromDB(): List<Movie> {
+    fun getPopularMoviesFromDB(): LiveData<List<Movie>> {
 //        Log.i(TAG, "getPopularMoviesFromDB")
         return movieDao.getPopularMovies()
     }
 
-    suspend fun getUpcomingMoviesFromDB(): List<Movie> {
+    fun getUpcomingMoviesFromDB(): LiveData<List<Movie>> {
 //        Log.i(TAG, "getUpcomingMoviesFromDB")
         return movieDao.getUpcomingMovies()
     }

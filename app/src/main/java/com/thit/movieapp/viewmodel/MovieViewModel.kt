@@ -23,18 +23,15 @@ class MovieViewModel @Inject constructor(private val repository: MovieRepository
     val upcomingMovieResponse: LiveData<Resource<UpcomingMovieResponse>>
         get() = _upcomingMovieResponse
 
-    private val _popularMovieList: MutableLiveData<List<Movie>> =
-        MutableLiveData()
     val popularMovieList: LiveData<List<Movie>>
-        get() = _popularMovieList
+        get() = repository.getPopularMoviesFromDB()
 
-    private val _upcomingMovieList: MutableLiveData<List<Movie>> =
-        MutableLiveData()
     val upcomingMovieList: LiveData<List<Movie>>
-        get() = _upcomingMovieList
+        get() = repository.getUpcomingMoviesFromDB()
 
     init {
-        checkMovieFromDBAndLoadFromApi()
+        getPopularMovies()
+        getUpcomingMovies()
     }
 
     private fun getPopularMovies() = viewModelScope.launch {
@@ -55,23 +52,5 @@ class MovieViewModel @Inject constructor(private val repository: MovieRepository
             _popularMovieResponse.value = repository.getPopularMovies()
             _upcomingMovieResponse.value = repository.getUpcomingMovies()
         }
-    }
-
-    fun checkMovieFromDBAndLoadFromApi() {
-
-        viewModelScope.launch {
-            val upcomingList = repository.getUpcomingMoviesFromDB()
-            if (upcomingList.isEmpty())
-                getUpcomingMovies()
-            else
-                _upcomingMovieList.value = upcomingList
-
-            val popularList = repository.getPopularMoviesFromDB()
-            if (popularList.isEmpty())
-                getPopularMovies()
-            else
-                _popularMovieList.value = popularList
-        }
-
     }
 }

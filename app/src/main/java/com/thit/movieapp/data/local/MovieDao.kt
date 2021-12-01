@@ -1,5 +1,6 @@
 package com.thit.movieapp.data.local
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.thit.movieapp.data.responses.Movie
 
@@ -16,7 +17,7 @@ interface MovieDao {
     suspend fun getMovieById(movieId: Int) : Movie?
 
     @Query("SELECT * FROM movie WHERE is_popular")
-    suspend fun getPopularMovies() : List<Movie>
+    fun getPopularMovies() : LiveData<List<Movie>>
 
     @Update
     suspend fun updateMovie(movie: Movie)
@@ -25,5 +26,5 @@ interface MovieDao {
     suspend fun deleteMovie(movie: Movie)
 
     @Query("SELECT * FROM movie WHERE up_coming_date IS NOT NULL")
-    suspend fun getUpcomingMovies() : List<Movie>
+    fun getUpcomingMovies() : LiveData<List<Movie>>
 }

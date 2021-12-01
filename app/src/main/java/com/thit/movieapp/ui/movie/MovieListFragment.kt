@@ -67,7 +67,7 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
             binding.errorLayout?.visible(it is Resource.Failure)
             when (it) {
                 is Resource.Success -> {
-                    renderPopularMovie(it.value.results.toMutableList())
+//                    renderPopularMovie(it.value.results.toMutableList())
                 }
                 is Resource.Failure -> handleApiError(it) { viewModel.loadMovies() }
             }
@@ -80,7 +80,7 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
             binding.errorLayout?.visible(it is Resource.Failure)
             when (it) {
                 is Resource.Success -> {
-                    renderUpcomingMovies(it.value.results.toMutableList())
+//                    renderUpcomingMovies(it.value.results.toMutableList())
                 }
                 is Resource.Failure -> handleApiError(it) { viewModel.loadMovies() }
             }
@@ -102,7 +102,7 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         adapterForPopularMovie = MovieAdapter(arrayListOf()) {
             viewModel.toggleFavoriteStatus(it)
-            adapterForPopularMovie.editItem(it)
+//            adapterForPopularMovie.editItem(it)
         }
         binding.recyclerViewForPopularMovie.adapter = adapterForPopularMovie
     }
@@ -112,7 +112,7 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         adapterFoUpcomingMovie = MovieAdapter(arrayListOf()) {
             viewModel.toggleFavoriteStatus(it)
-            adapterFoUpcomingMovie.editItem(it)
+//            adapterFoUpcomingMovie.editItem(it)
         }
         binding.recyclerViewForUpcomingMovie.adapter = adapterFoUpcomingMovie
     }
